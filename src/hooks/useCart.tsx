@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
 import { Product, Stock } from '../types';
@@ -40,7 +40,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
       const amount = productExistsAtCart ? productExistsAtCart.amount + 1 : 1;
 
-      if (amount > stockAmount) {                                     //testar depoisd de pronto:     amount > stockAmount && toast.error
+      if (amount > stockAmount) {
         toast.error('Quantidade solicitada fora de estoque');
         return
       }
@@ -65,9 +65,9 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       const updatedCart = [...cart]
       const productExistsAtCart = updatedCart.find((product) => product.id === productId);
       if (productExistsAtCart) {
-        updatedCart.filter(product => product.id === productId)
-        setCart(updatedCart)
-        localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedCart))
+        const newArray = updatedCart.filter(product => product.id !== productId)
+        setCart(newArray)
+        localStorage.setItem('@RocketShoes:cart', JSON.stringify(newArray))
       } else {
         toast.error('Erro na remoção do produto');
       }
